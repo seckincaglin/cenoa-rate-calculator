@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Freelance Rate Calculator | Cenoa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .logo img {
+            height: 32px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #333;
+            background: #fafafa;
+            transition: all 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 44px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .input-with-prefix {
+            position: relative;
+        }
+
+        .input-with-prefix span {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
+        }
+
+        .input-with-prefix input {
+            padding-left: 32px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Results */
+        .results {
+            display: none;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rate-display {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .rate-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .rate-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .rate-value span {
+            font-size: 24px;
+            color: #666;
+        }
+
+        .rate-range {
+            font-size: 14px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .insight-box {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .insight-box.warning {
+            background: #fff5f5;
+        }
+
+        .insight-box.success {
+            background: #f0fff4;
+        }
+
+        .insight-box.opportunity {
+            background: #fffbeb;
+        }
+
+        .insight-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .insight-text {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .insight-text.large {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 20px;
+            margin-right: 6px;
+        }
+
+        .share-section {
+            margin-top: 24px;
+        }
+
+        .share-box {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .share-btn {
+            background: #1DA1F2;
+            padding: 12px 20px;
+            font-size: 14px;
+        }
+
+        .share-btn.copy {
+            background: #333;
+            margin-bottom: 8px;
+        }
+
+        .share-btn.twitter {
+            background: #1DA1F2;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .share-buttons button {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .copied-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .copied-toast.show {
+            opacity: 1;
+        }
+
+        .powered-by {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .powered-by a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Two column on larger screens */
+        @media (min-width: 600px) {
+            .form-row {
+                display: flex;
+                gap: 16px;
+            }
+            .form-row .form-group {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo">
+                <span class="logo-text">💰 Cenoa</span>
+            </div>
+            <h1>AI Freelance Rate Calculator</h1>
+            <p class="subtitle">Discover your true market value</p>
+
+            <form id="calculator-form">
+                <div class="form-group">
+                    <label>What do you do?</label>
+                    <select id="skill" required>
+                        <option value="">Select your skill...</option>
+                        <optgroup label="Development">
+                            <option value="software_developer">Software Developer</option>
+                            <option value="frontend_developer">Frontend Developer</option>
+                            <option value="backend_developer">Backend Developer</option>
+                            <option value="fullstack_developer">Fullstack Developer</option>
+                            <option value="mobile_developer">Mobile Developer</option>
+                            <option value="ai_ml_engineer">AI/ML Engineer</option>
+                            <option value="devops_engineer">DevOps Engineer</option>
+                            <option value="data_scientist">Data Scientist</option>
+                        </optgroup>
+                        <optgroup label="Design">
+                            <option value="ui_ux_designer">UI/UX Designer</option>
+                            <option value="graphic_designer">Graphic Designer</option>
+                            <option value="web_designer">Web Designer</option>
+                        </optgroup>
+                        <optgroup label="Content & Marketing">
+                            <option value="content_writer">Content Writer</option>
+                            <option value="copywriter">Copywriter</option>
+                            <option value="video_editor">Video Editor</option>
+                            <option value="social_media_manager">Social Media Manager</option>
+                        </optgroup>
+                        <optgroup label="Business">
+                            <option value="virtual_assistant">Virtual Assistant</option>
+                            <option value="project_manager">Project Manager</option>
+                            <option value="product_manager">Product Manager</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Experience Level</label>
+                        <select id="experience" required>
+                            <option value="junior">Junior (0-2 years)</option>
+                            <option value="mid" selected>Mid (3-5 years)</option>
+                            <option value="senior">Senior (6-9 years)</option>
+                            <option value="expert">Expert (10+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Location</label>
+                        <select id="location" required>
+                            <option value="">Select country...</option>
+                            <optgroup label="Turkey & Middle East">
+                                <option value="turkey">🇹🇷 Turkey</option>
+                                <option value="israel">🇮🇱 Israel</option>
+                                <option value="uae">🇦🇪 UAE</option>
+                            </optgroup>
+                            <optgroup label="North America">
+                                <option value="us">🇺🇸 United States</option>
+                                <option value="canada">🇨🇦 Canada</option>
+                            </optgroup>
+                            <optgroup label="Western Europe">
+                                <option value="uk">🇬🇧 United Kingdom</option>
+                                <option value="germany">🇩🇪 Germany</option>
+                                <option value="france">🇫🇷 France</option>
+                                <option value="switzerland">🇨🇭 Switzerland</option>
+                            </optgroup>
+                            <optgroup label="Eastern Europe">
+                                <option value="poland">🇵🇱 Poland</option>
+                                <option value="ukraine">🇺🇦 Ukraine</option>
+                                <option value="romania">🇷🇴 Romania</option>
+                            </optgroup>
+                            <optgroup label="Asia">
+                                <option value="india">🇮🇳 India</option>
+                                <option value="philippines">🇵🇭 Philippines</option>
+                                <option value="vietnam">🇻🇳 Vietnam</option>
+                                <option value="singapore">🇸🇬 Singapore</option>
+                                <option value="japan">🇯🇵 Japan</option>
+                            </optgroup>
+                            <optgroup label="Latin America">
+                                <option value="brazil">🇧🇷 Brazil</option>
+                                <option value="mexico">🇲🇽 Mexico</option>
+                                <option value="argentina">🇦🇷 Argentina</option>
+                                <option value="colombia">🇨🇴 Colombia</option>
+                            </optgroup>
+                            <optgroup label="Africa">
+                                <option value="south_africa">🇿🇦 South Africa</option>
+                                <option value="nigeria">🇳🇬 Nigeria</option>
+                                <option value="kenya">🇰🇪 Kenya</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Target Clients</label>
+                        <select id="client_market">
+                            <option value="us">🇺🇸 US Clients</option>
+                            <option value="uk">🇬🇧 UK Clients</option>
+                            <option value="eu">🇪🇺 EU Clients</option>
+                            <option value="global" selected>🌍 Global</option>
+                            <option value="local">📍 Local Only</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Rate (optional)</label>
+                        <div class="input-with-prefix">
+                            <span>$</span>
+                            <input type="number" id="current_rate" placeholder="40" min="1" max="1000">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">Calculate My Rate 🚀</button>
+            </form>
+
+            <div class="results" id="results">
+                <div class="rate-display">
+                    <div class="rate-label">Your Recommended Rate</div>
+                    <div class="rate-value">$<span id="result-rate">80</span><span>/hr</span></div>
+                    <div class="rate-range" id="result-range">Range: $50 - $160/hr</div>
+                </div>
+
+                <div class="insight-box opportunity" id="opportunity-box">
+                    <div class="insight-title">💡 International Opportunity</div>
+                    <div class="insight-text" id="opportunity-text"></div>
+                </div>
+
+                <div class="insight-box" id="comparison-box">
+                    <div class="insight-title">📊 Your Current Rate</div>
+                    <div class="insight-text large" id="comparison-text"></div>
+                </div>
+
+                <div class="share-section">
+                    <div class="insight-title">📱 Share Your Results</div>
+                    <div class="share-box" id="share-text"></div>
+                    <div class="share-buttons">
+                        <button type="button" class="share-btn copy" onclick="copyToClipboard()">📋 Copy</button>
+                        <button type="button" class="share-btn twitter" onclick="shareTwitter()">𝕏 Tweet</button>
+                    </div>
+                </div>
+
+                <div class="powered-by">
+                    Powered by <a href="https://cenoa.com" target="_blank">Cenoa</a> · Get paid from anywhere 🌍
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copied-toast" id="toast">Copied to clipboard! ✓</div>
+
+    <script>
+        // Rate data
+        const BASE_RATES = {
+            software_developer: [50, 80, 160],
+            frontend_developer: [40, 65, 120],
+            backend_developer: [50, 85, 140],
+            fullstack_developer: [55, 95, 160],
+            mobile_developer: [45, 75, 140],
+            ai_ml_engineer: [80, 130, 250],
+            devops_engineer: [55, 85, 150],
+            data_scientist: [60, 100, 180],
+            ui_ux_designer: [35, 55, 90],
+            graphic_designer: [25, 40, 60],
+            web_designer: [30, 50, 80],
+            content_writer: [20, 40, 80],
+            copywriter: [30, 55, 100],
+            video_editor: [25, 45, 80],
+            social_media_manager: [20, 40, 70],
+            virtual_assistant: [15, 25, 45],
+            project_manager: [45, 75, 130],
+            product_manager: [60, 100, 180],
+        };
+
+        const EXPERIENCE_MULT = {
+            junior: 0.6,
+            mid: 1.0,
+            senior: 1.5,
+            expert: 2.0
+        };
+
+        const LOCATION_ADJ = {
+            us: 1.0, canada: 0.9,
+            uk: 0.85, germany: 0.8, france: 0.75, switzerland: 1.1,
+            poland: 0.45, ukraine: 0.35, romania: 0.4,
+            turkey: 0.4, israel: 0.75, uae: 0.7,
+            india: 0.35, philippines: 0.3, vietnam: 0.3, singapore: 0.7, japan: 0.75,
+            brazil: 0.4, mexico: 0.4, argentina: 0.35, colombia: 0.35,
+            south_africa: 0.35, nigeria: 0.3, kenya: 0.3
+        };
+
+        const CLIENT_PREMIUM = {
+            us: 1.0, uk: 0.9, eu: 0.85, global: 0.7, local: 0.5
+        };
+
+        const SKILL_NAMES = {
+            software_developer: "Software Developer",
+            frontend_developer: "Frontend Developer",
+            backend_developer: "Backend Developer",
+            fullstack_developer: "Fullstack Developer",
+            mobile_developer: "Mobile Developer",
+            ai_ml_engineer: "AI/ML Engineer",
+            devops_engineer: "DevOps Engineer",
+            data_scientist: "Data Scientist",
+            ui_ux_designer: "UI/UX Designer",
+            graphic_designer: "Graphic Designer",
+            web_designer: "Web Designer",
+            content_writer: "Content Writer",
+            copywriter: "Copywriter",
+            video_editor: "Video Editor",
+            social_media_manager: "Social Media Manager",
+            virtual_assistant: "Virtual Assistant",
+            project_manager: "Project Manager",
+            product_manager: "Product Manager"
+        };
+
+        let lastResult = null;
+
+        document.getElementById('calculator-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculate();
+        });
+
+        function calculate() {
+            const skill = document.getElementById('skill').value;
+            const experience = document.getElementById('experience').value;
+            const location = document.getElementById('location').value;
+            const clientMarket = document.getElementById('client_market').value;
+            const currentRate = parseFloat(document.getElementById('current_rate').value) || null;
+
+            if (!skill || !location) {
+                alert('Please select your skill and location');
+                return;
+            }
+
+            const [baseMin, baseMid, baseMax] = BASE_RATES[skill];
+            const expMult = EXPERIENCE_MULT[experience];
+            const locAdj = LOCATION_ADJ[location];
+            const clientPrem = CLIENT_PREMIUM[clientMarket];
+
+            const marketFactor = Math.max(locAdj, clientPrem);
+
+            const rateMin = Math.round(baseMin * expMult * marketFactor);
+            const rateMid = Math.round(baseMid * expMult * marketFactor);
+            const rateMax = Math.round(baseMax * expMult * marketFactor);
+
+            const localRate = Math.round(baseMid * expMult * locAdj);
+
+            // Update UI
+            document.getElementById('result-rate').textContent = rateMid;
+            document.getElementById('result-range').textContent = `Range: $${rateMin} - $${rateMax}/hr`;
+
+            // International opportunity
+            const oppBox = document.getElementById('opportunity-box');
+            const oppText = document.getElementById('opportunity-text');
+            if (locAdj < clientPrem && clientMarket !== 'local') {
+                const uplift = Math.round((clientPrem / locAdj - 1) * 100);
+                oppText.textContent = `Targeting ${clientMarket.toUpperCase()} clients could earn you ${uplift}% more than local rates!`;
+                oppBox.style.display = 'block';
+            } else {
+                oppBox.style.display = 'none';
+            }
+
+            // Comparison
+            const compBox = document.getElementById('comparison-box');
+            const compText = document.getElementById('comparison-text');
+            if (currentRate) {
+                compBox.style.display = 'block';
+                if (currentRate < rateMid * 0.8) {
+                    const diff = Math.round((rateMid / currentRate - 1) * 100);
+                    compText.innerHTML = `<span class="emoji">🚨</span> You're undercharging by ~${diff}%!`;
+                    compBox.className = 'insight-box warning';
+                } else if (currentRate > rateMid * 1.2) {
+                    const diff = Math.round((currentRate / rateMid - 1) * 100);
+                    compText.innerHTML = `<span class="emoji">💪</span> You're charging ${diff}% above market - nice!`;
+                    compBox.className = 'insight-box success';
+                } else {
+                    compText.innerHTML = `<span class="emoji">✓</span> You're pricing competitively!`;
+                    compBox.className = 'insight-box success';
+                }
+            } else {
+                compBox.style.display = 'none';
+            }
+
+            // Shareable text
+            const skillName = SKILL_NAMES[skill];
+            const expName = experience.charAt(0).toUpperCase() + experience.slice(1);
+            let shareText = `I just discovered my market rate as a ${expName} ${skillName}:\n\n`;
+            shareText += `💰 Recommended: $${rateMid}/hr\n`;
+            shareText += `📊 Range: $${rateMin} - $${rateMax}/hr\n`;
+            if (currentRate && currentRate < rateMid * 0.8) {
+                const diff = Math.round((rateMid / currentRate - 1) * 100);
+                shareText += `\n🚨 I was undercharging by ${diff}%!\n`;
+            }
+            shareText += `\nCalculate yours → cenoa.com/rate-calculator`;
+
+            document.getElementById('share-text').textContent = shareText;
+            lastResult = { shareText, rateMid, rateMin, rateMax, skillName, expName };
+
+            // Show results
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('share-text').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        }
+
+        function shareTwitter() {
+            const text = document.getElementById('share-text').textContent;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'width=550,height=420');
+        }
+    </script>
+</body>
+</html>
