@@ -350,6 +350,13 @@
                             <option value="copywriter">Copywriter</option>
                             <option value="video_editor">Video Editor</option>
                             <option value="social_media_manager">Social Media Manager</option>
+                            <option value="content_creator">Content Creator</option>
+                            <option value="youtube_creator">YouTube Creator</option>
+                            <option value="podcast_producer">Podcast Producer</option>
+                            <option value="influencer_manager">Influencer Manager</option>
+                            <option value="email_marketer">Email Marketer</option>
+                            <option value="seo_specialist">SEO Specialist</option>
+                            <option value="community_manager">Community Manager</option>
                         </optgroup>
                         <optgroup label="Business">
                             <option value="virtual_assistant">Virtual Assistant</option>
@@ -457,6 +464,11 @@
                     <div class="insight-text large" id="comparison-text"></div>
                 </div>
 
+                <div class="insight-box" id="tip-box" style="background: #f0f9ff;">
+                    <div class="insight-title">💎 Pro Tip</div>
+                    <div class="insight-text" id="tip-text"></div>
+                </div>
+
                 <div class="share-section">
                     <div class="insight-title">📱 Share Your Results</div>
                     <div class="share-box" id="share-text"></div>
@@ -493,6 +505,13 @@
             copywriter: [30, 55, 100],
             video_editor: [25, 45, 80],
             social_media_manager: [20, 40, 70],
+            content_creator: [30, 60, 120],
+            youtube_creator: [35, 70, 150],
+            podcast_producer: [30, 55, 100],
+            influencer_manager: [35, 65, 110],
+            email_marketer: [25, 50, 90],
+            seo_specialist: [30, 60, 110],
+            community_manager: [25, 45, 75],
             virtual_assistant: [15, 25, 45],
             project_manager: [45, 75, 130],
             product_manager: [60, 100, 180],
@@ -535,6 +554,13 @@
             copywriter: "Copywriter",
             video_editor: "Video Editor",
             social_media_manager: "Social Media Manager",
+            content_creator: "Content Creator",
+            youtube_creator: "YouTube Creator",
+            podcast_producer: "Podcast Producer",
+            influencer_manager: "Influencer Manager",
+            email_marketer: "Email Marketer",
+            seo_specialist: "SEO Specialist",
+            community_manager: "Community Manager",
             virtual_assistant: "Virtual Assistant",
             project_manager: "Project Manager",
             product_manager: "Product Manager"
@@ -587,25 +613,142 @@
                 oppBox.style.display = 'none';
             }
 
-            // Comparison
+            // Comparison with varied copy
             const compBox = document.getElementById('comparison-box');
             const compText = document.getElementById('comparison-text');
             if (currentRate) {
                 compBox.style.display = 'block';
                 if (currentRate < rateMid * 0.8) {
                     const diff = Math.round((rateMid / currentRate - 1) * 100);
-                    compText.innerHTML = `<span class="emoji">🚨</span> You're undercharging by ~${diff}%!`;
+                    const underchargeCopy = [
+                        `<span class="emoji">🚨</span> You're undercharging by ~${diff}%! Time to raise those rates.`,
+                        `<span class="emoji">💸</span> You could be earning ${diff}% more. That's money left on the table!`,
+                        `<span class="emoji">⚠️</span> Your rate is ${diff}% below market. Your skills are worth more!`,
+                        `<span class="emoji">📈</span> Charging ${diff}% less than market value? Let's fix that.`
+                    ];
+                    compText.innerHTML = underchargeCopy[Math.floor(Math.random() * underchargeCopy.length)];
                     compBox.className = 'insight-box warning';
                 } else if (currentRate > rateMid * 1.2) {
                     const diff = Math.round((currentRate / rateMid - 1) * 100);
-                    compText.innerHTML = `<span class="emoji">💪</span> You're charging ${diff}% above market - nice!`;
+                    const highRateCopy = [
+                        `<span class="emoji">💪</span> You're charging ${diff}% above market - crushing it!`,
+                        `<span class="emoji">🔥</span> Premium pricing! You're ${diff}% above average. Well done!`,
+                        `<span class="emoji">⭐</span> ${diff}% above market? You know your worth!`,
+                        `<span class="emoji">🎯</span> Top ${diff}% earner territory. Keep it up!`
+                    ];
+                    compText.innerHTML = highRateCopy[Math.floor(Math.random() * highRateCopy.length)];
                     compBox.className = 'insight-box success';
                 } else {
-                    compText.innerHTML = `<span class="emoji">✓</span> You're pricing competitively!`;
+                    const goodRateCopy = [
+                        `<span class="emoji">✓</span> You're pricing competitively! Right in the sweet spot.`,
+                        `<span class="emoji">👍</span> Solid rate! You're aligned with market expectations.`,
+                        `<span class="emoji">🎯</span> Perfect pricing! You're right on target.`,
+                        `<span class="emoji">💯</span> Great rate! You're pricing yourself fairly.`
+                    ];
+                    compText.innerHTML = goodRateCopy[Math.floor(Math.random() * goodRateCopy.length)];
                     compBox.className = 'insight-box success';
                 }
             } else {
                 compBox.style.display = 'none';
+            }
+
+            // Profession-specific tips
+            const tipBox = document.getElementById('tip-box');
+            const tipText = document.getElementById('tip-text');
+            const professionTips = {
+                content_creator: [
+                    "Build a portfolio showcasing your best work. Brands pay premium for proven results.",
+                    "Consider offering packages (content + strategy) to increase your project value.",
+                    "Your engagement rates matter more than follower count. Track and showcase your metrics."
+                ],
+                youtube_creator: [
+                    "Brand deals pay 2-5x more than AdSense. Focus on building a media kit.",
+                    "Package rates: Single video vs. multi-video campaigns can 3x your earnings.",
+                    "Negotiate usage rights separately - unlimited use should cost more."
+                ],
+                podcast_producer: [
+                    "Offer tiered packages: audio-only vs. video podcast production commands different rates.",
+                    "Monthly retainer clients provide stable income - aim for 2-3 anchor clients.",
+                    "Post-production + show notes + social clips = bundle pricing opportunity."
+                ],
+                influencer_manager: [
+                    "Percentage-based fees (15-20% of deals) can outperform hourly rates for top talent.",
+                    "Build case studies showing ROI - managers who prove value charge 2x more.",
+                    "Offer growth strategy + management bundles for premium pricing."
+                ],
+                social_media_manager: [
+                    "Monthly retainers beat hourly billing - aim for 3-6 month contracts.",
+                    "Content creation + management commands higher rates than management alone.",
+                    "Track engagement metrics religiously - results justify rate increases."
+                ],
+                video_editor: [
+                    "Specialization pays: wedding videos vs. corporate vs. YouTube all have different rate ceilings.",
+                    "Fast turnaround = premium pricing. Offer rush delivery tiers.",
+                    "Raw footage organization included? That's an add-on service."
+                ],
+                copywriter: [
+                    "Direct response copy (sales pages, emails) pays 2-3x more than blog posts.",
+                    "Royalty deals for high-converting copy can earn you 5-10x the base rate.",
+                    "Specialize in one niche (SaaS, eCommerce, finance) to command premium rates."
+                ],
+                email_marketer: [
+                    "Performance bonuses tied to open/click rates can double your earnings.",
+                    "Strategy + execution commands 50% more than execution-only work.",
+                    "Email sequence packages (welcome, nurture, sales) = predictable retainer income."
+                ],
+                seo_specialist: [
+                    "Results-based pricing (rank improvements) can 3x your income vs. hourly.",
+                    "Local SEO for small businesses vs. enterprise SEO = different pricing strategies.",
+                    "Technical SEO audits can be charged as one-time premium projects."
+                ],
+                community_manager: [
+                    "Engagement metrics = leverage. Track and report member growth + activity.",
+                    "Crisis management and moderation are separate premium services.",
+                    "Build + manage beats manage-only for pricing power."
+                ],
+                software_developer: [
+                    "Specializing in hot tech (AI, blockchain, React) can double your rates.",
+                    "Fixed-price projects with clear scope beat hourly for experienced devs.",
+                    "Maintenance retainers provide stable income on top of project work."
+                ],
+                ai_ml_engineer: [
+                    "AI is premium right now - but prove your expertise with a strong portfolio.",
+                    "Consulting + implementation commands 50% more than implementation alone.",
+                    "LLM integration work is hot - specialize while demand is high."
+                ],
+                ui_ux_designer: [
+                    "User research + design commands 40% more than design-only work.",
+                    "Case studies showing business impact justify premium rates.",
+                    "Figma/design system creation = separate high-value service."
+                ],
+                graphic_designer: [
+                    "Brand identity packages (logo + guidelines + collateral) = higher value than one-off logos.",
+                    "Unlimited revisions kills profit. Set clear revision limits in contracts.",
+                    "Print design generally pays less than digital - diversify your skills."
+                ],
+                project_manager: [
+                    "PMP certification can add 20-30% to your rates immediately.",
+                    "Industry expertise (construction, software, marketing) commands premiums.",
+                    "Full project ownership beats coordination-only for pricing."
+                ],
+                product_manager: [
+                    "B2B SaaS PM work typically pays 30% more than consumer products.",
+                    "Strategy + roadmap + execution beats execution-only roles.",
+                    "Show metrics: successful launches, revenue impact, user growth."
+                ],
+                virtual_assistant: [
+                    "Specialize! Executive assistants charge 2-3x more than general VAs.",
+                    "Offer packages: admin + basic marketing/bookkeeping = higher value.",
+                    "Long-term retainer clients (6+ months) provide stability."
+                ]
+            };
+
+            if (professionTips[skill]) {
+                const tips = professionTips[skill];
+                tipText.textContent = tips[Math.floor(Math.random() * tips.length)];
+                tipBox.style.display = 'block';
+            } else {
+                tipBox.style.display = 'none';
             }
 
             // Shareable text
