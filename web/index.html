@@ -4,787 +4,1724 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Freelance Rate Calculator | Cenoa</title>
+    <meta name="description" content="Find out if you're charging what you're worth. AI-powered freelance rate calculator for 120+ countries. Free, instant, no signup.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-dark: #1e3a8a;
+            --blue-mid: #2563eb;
+            --blue-light: #3b82f6;
+            --lime: #c8ff00;
+            --lime-text: #1a1a2e;
+            --white: #ffffff;
+            --bg-light: #f8fafc;
+            --border: #e5e7eb;
+            --text: #1a1a2e;
+            --text-secondary: #64748b;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        /* ── Header ── */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 64px;
+            background: var(--blue-dark);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .logo {
-            text-align: center;
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
         }
 
-        .logo img {
-            height: 32px;
+        .logo-icon {
+            width: 28px;
+            height: 28px;
         }
 
         .logo-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            color: #667eea;
+            color: white;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 22px;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-            font-weight: 600;
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
+        .back-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: white; }
+
+        .download-btn {
+            background: var(--lime);
+            color: var(--lime-text);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .download-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f2460 0%, #1e3a8a 40%, #2563eb 100%);
+            padding: 100px 60px 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.95);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 100px;
             margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            color: white;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--lime);
+        }
+
+        .hero > .hero-container > .hero-content > p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--lime);
+            color: var(--lime-text);
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            margin-bottom: 16px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .hero-cta:hover { transform: translateY(-2px); opacity: 0.95; }
+
+        .hero-note {
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .hero-stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        /* ── Hero Calculator (right side) ── */
+        .hero-visual {
+            flex: 0 0 460px;
+            position: relative;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .calc-card-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 20px 24px;
+            color: white;
+        }
+
+        .calc-card-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .calc-card-header p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .calc-card-body {
+            padding: 24px;
+        }
+
+        .calc-field {
+            margin-bottom: 16px;
+        }
+
+        .calc-field-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .calc-field-select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            background: #f8fafc;
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .calc-field-select:focus {
+            outline: none;
+            border-color: var(--blue-mid);
+        }
+
+        .calc-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .calc-result-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .calc-result-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.75);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .calc-result-rate {
+            font-size: 44px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+
+        .calc-result-rate sup {
+            font-size: 20px;
+            font-weight: 700;
+            vertical-align: top;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .calc-result-rate span {
+            font-size: 18px;
+            opacity: 0.75;
+        }
+
+        .calc-result-hint {
+            display: inline-block;
+            background: var(--lime);
+            color: var(--lime-text);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        /* Floating badges */
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 11px 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .floating-badge.warning {
+            top: -16px;
+            right: -20px;
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .floating-badge.users {
+            bottom: 24px;
+            left: -24px;
+            color: #1e3a8a;
+        }
+
+        /* ── Stats Bar ── */
+        .stats-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 32px 60px;
+            max-width: 100%;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ── Problem Section ── */
+        .problem-section {
+            padding: 80px 60px;
+            background: var(--bg-light);
+        }
+
+        .section-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--blue-mid);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 560px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        .problem-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+        }
+
+        .problem-card-icon { font-size: 44px; margin-bottom: 16px; }
+
+        .problem-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 10px;
+        }
+
+        .problem-card-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── How It Works ── */
+        .how-section {
+            padding: 80px 60px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        }
+
+        .how-section .section-label { color: var(--lime); }
+        .how-section .section-title { color: white; }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .how-step { text-align: center; }
+
+        .how-step-number {
+            width: 64px;
+            height: 64px;
+            background: var(--lime);
+            color: var(--lime-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .how-step-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .how-step-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+        }
+
+        /* ── Calculator Section ── */
+        .calculator-section {
+            padding: 80px 60px;
+            background: white;
+        }
+
+        .calc-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .calc-form-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border);
+        }
+
+        .calc-form-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 24px;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #444;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--text);
+            margin-bottom: 8px;
         }
 
-        select, input {
+        .form-group select,
+        .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            font-size: 16px;
-            color: #333;
-            background: #fafafa;
-            transition: all 0.2s;
-            appearance: none;
-            -webkit-appearance: none;
-        }
-
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 44px;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: #667eea;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
             background: white;
+            transition: border-color 0.2s;
         }
 
-        .input-with-prefix {
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--blue-mid);
+        }
+
+        .input-with-unit {
             position: relative;
         }
 
-        .input-with-prefix span {
+        .input-with-unit input {
+            padding-right: 60px;
+        }
+
+        .input-unit {
             position: absolute;
-            left: 16px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
-            font-size: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            pointer-events: none;
         }
 
-        .input-with-prefix input {
-            padding-left: 32px;
-        }
-
-        button {
+        .calc-submit {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
             color: white;
             border: none;
             border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: opacity 0.2s, transform 0.2s;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        .calc-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
 
-        button:active {
-            transform: translateY(0);
+        .tips-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border);
         }
 
-        /* Results */
-        .results {
-            display: none;
-            margin-top: 28px;
-            padding-top: 28px;
-            border-top: 2px solid #f0f0f0;
-        }
-
-        .results.show {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .rate-display {
-            text-align: center;
+        .tips-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--blue-dark);
             margin-bottom: 24px;
         }
 
-        .rate-label {
+        .tip-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .tip-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--lime);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .tip-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .tip-text {
             font-size: 13px;
-            color: #666;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .cenoa-promo {
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .cenoa-promo-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
         }
 
-        .rate-value {
-            font-size: 48px;
+        .cenoa-promo p {
+            font-size: 14px;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .cenoa-promo a {
+            display: inline-block;
+            margin-top: 14px;
+            background: var(--lime);
+            color: var(--lime-text);
+            font-size: 13px;
             font-weight: 700;
-            color: #1a1a2e;
+            padding: 8px 20px;
+            border-radius: 100px;
+            text-decoration: none;
         }
 
-        .rate-value span {
-            font-size: 24px;
-            color: #666;
+        /* ── Results ── */
+        .results-section {
+            padding: 0 60px 80px;
+            background: white;
         }
 
-        .rate-range {
-            font-size: 14px;
-            color: #888;
-            margin-top: 4px;
+        .hidden { display: none !important; }
+
+        .results-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        .insight-box {
-            background: #f8f9ff;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
+        .results-header {
+            text-align: center;
+            padding: 40px 0 32px;
         }
 
-        .insight-box.warning {
-            background: #fff5f5;
-        }
-
-        .insight-box.success {
-            background: #f0fff4;
-        }
-
-        .insight-box.opportunity {
-            background: #fffbeb;
-        }
-
-        .insight-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .insight-text {
-            font-size: 15px;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .insight-text.large {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .emoji {
-            font-size: 20px;
-            margin-right: 6px;
-        }
-
-        .share-section {
-            margin-top: 24px;
-        }
-
-        .share-box {
-            background: #f5f5f5;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 14px;
-            color: #444;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-
-        .share-btn {
-            background: #1DA1F2;
-            padding: 12px 20px;
-            font-size: 14px;
-        }
-
-        .share-btn.copy {
-            background: #333;
+        .results-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--blue-dark);
             margin-bottom: 8px;
         }
 
-        .share-btn.twitter {
-            background: #1DA1F2;
+        .results-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
         }
 
-        .share-buttons {
-            display: flex;
-            gap: 8px;
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .share-buttons button {
-            flex: 1;
-            padding: 12px;
-            font-size: 14px;
+        .result-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            position: relative;
         }
 
-        .copied-toast {
-            position: fixed;
-            bottom: 20px;
+        .result-card.recommended {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border-color: transparent;
+        }
+
+        .result-card.recommended .result-label,
+        .result-card.recommended .result-value,
+        .result-card.recommended .result-subtext { color: white; }
+
+        .result-card.recommended .result-badge {
+            position: absolute;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 100;
+            background: var(--lime);
+            color: var(--lime-text);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
         }
 
-        .copied-toast.show {
-            opacity: 1;
-        }
-
-        .powered-by {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #999;
-        }
-
-        .powered-by a {
-            color: #667eea;
-            text-decoration: none;
+        .result-label {
+            font-size: 11px;
             font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
-        /* Two column on larger screens */
-        @media (min-width: 600px) {
-            .form-row {
-                display: flex;
-                gap: 16px;
-            }
-            .form-row .form-group {
-                flex: 1;
-            }
+        .result-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin-bottom: 4px;
+        }
+
+        .result-subtext {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .breakdown-card, .market-card, .pro-tips-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .breakdown-card h3, .market-card h3, .pro-tips-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 20px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .breakdown-item:last-child { border-bottom: none; font-weight: 700; color: var(--blue-dark); }
+
+        .comparison-bar { margin-bottom: 16px; }
+
+        .comparison-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .bar-container {
+            height: 10px;
+            background: var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue-light), var(--blue-mid));
+            border-radius: 100px;
+            font-size: 0;
+            transition: width 0.8s ease;
+        }
+
+        .bar-fill.your-rate {
+            background: linear-gradient(90deg, var(--lime), #a0d000);
+        }
+
+        .pro-tips-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pro-tips-card ul li {
+            padding: 10px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pro-tips-card ul li:last-child { border-bottom: none; }
+
+        .pro-tips-card ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--blue-mid);
+            font-weight: 700;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding: 16px 0;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); color: white; }
+        .btn-secondary { background: var(--bg-light); color: var(--blue-dark); border: 2px solid var(--border); }
+        .btn-primary:hover, .btn-secondary:hover { transform: translateY(-1px); opacity: 0.9; }
+
+        /* ── Features Section ── */
+        .features-section {
+            padding: 80px 60px;
+            background: var(--bg-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .features-image {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 20px;
+            padding: 60px 40px;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+        }
+
+        .features-text h3 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin-bottom: 14px;
+        }
+
+        .features-text > p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .features-list li::before {
+            content: "✓";
+            width: 22px;
+            height: 22px;
+            background: var(--lime);
+            color: var(--lime-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ── Testimonials ── */
+        .testimonials-section {
+            padding: 80px 60px;
+            background: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        .testimonial-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid var(--border);
+        }
+
+        .testimonial-stars {
+            color: #f59e0b;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .testimonial-name { font-weight: 700; color: var(--blue-dark); font-size: 15px; }
+        .testimonial-role { font-size: 13px; color: var(--text-secondary); }
+
+        /* ── CTA Section ── */
+        .cta-section { padding: 60px; background: white; }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            border-radius: 24px;
+            padding: 48px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cta-text h3 {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .cta-text p { font-size: 16px; color: rgba(255,255,255,0.8); }
+
+        .cta-button {
+            background: var(--lime);
+            color: var(--lime-text);
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .cta-button:hover { transform: translateY(-2px); opacity: 0.95; }
+
+        /* ── Footer ── */
+        footer {
+            padding: 32px 60px;
+            background: var(--blue-dark);
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo svg { width: 28px; height: 28px; }
+        .footer-logo span { font-size: 18px; font-weight: 700; color: white; }
+
+        footer p { font-size: 14px; color: rgba(255,255,255,0.6); }
+        footer a { color: var(--lime); text-decoration: none; font-weight: 600; }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .header { padding: 0 24px; }
+            .hero { padding: 100px 24px 60px; }
+            .hero-container { flex-direction: column; }
+            .hero h1 { font-size: 38px; }
+            .hero-visual { flex: none; width: 100%; max-width: 480px; }
+            .floating-badge { display: none; }
+            .stats-bar { padding: 24px; grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2) { border-right: none; }
+            .problem-section, .how-section, .calculator-section, .results-section, .features-section, .testimonials-section, .cta-section { padding: 60px 24px; }
+            .problem-cards, .how-steps { grid-template-columns: 1fr; }
+            .calc-layout, .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .cta-box { flex-direction: column; text-align: center; padding: 40px 32px; }
+            .results-grid { grid-template-columns: repeat(2, 1fr); }
+            footer { padding: 32px 24px; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 30px; }
+            .stats-bar { grid-template-columns: 1fr 1fr; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+            .calc-two-col { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="logo">
-                <span class="logo-text">💰 Cenoa</span>
+
+    <!-- ── Header ── -->
+    <header class="header">
+        <a href="https://cenoa.com" class="logo">
+            <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+                <path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16V24H16C11.5817 24 8 20.4183 8 16Z" fill="white"/>
+                <path d="M4 12C4 7.58172 7.58172 4 12 4H16V12C16 16.4183 12.4183 20 8 20H4V12Z" fill="#7dd3fc"/>
+            </svg>
+            <span class="logo-text">cenoa</span>
+        </a>
+        <div class="nav-right">
+            <a href="https://cenoa.com" class="back-link">← All Tools</a>
+            <a href="https://cenoa.com" class="download-btn">Download App</a>
+        </div>
+    </header>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">⚠️ 73% of freelancers undercharge for their work</div>
+                <h1>Are you charging <span>what you're worth?</span></h1>
+                <p>Find out in 30 seconds. Our AI analyzes your skills, experience, and location against real market data to reveal your true earning potential.</p>
+                <a href="#calculator" class="hero-cta">Calculate My Rate →</a>
+                <p class="hero-note">✓ Free forever &nbsp;•&nbsp; ✓ No signup required &nbsp;•&nbsp; ✓ 30 seconds</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">47K+</div>
+                        <div class="hero-stat-label">Rates calculated</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">+$42/hr</div>
+                        <div class="hero-stat-label">Avg. increase found</div>
+                    </div>
+                </div>
             </div>
-            <h1>AI Freelance Rate Calculator</h1>
-            <p class="subtitle">Discover your true market value</p>
 
-            <form id="calculator-form">
-                <div class="form-group">
-                    <label>What do you do?</label>
-                    <select id="skill" required>
-                        <option value="">Select your skill...</option>
-                        <optgroup label="Development">
-                            <option value="software_developer">Software Developer</option>
-                            <option value="frontend_developer">Frontend Developer</option>
-                            <option value="backend_developer">Backend Developer</option>
-                            <option value="fullstack_developer">Fullstack Developer</option>
-                            <option value="mobile_developer">Mobile Developer</option>
-                            <option value="ai_ml_engineer">AI/ML Engineer</option>
-                            <option value="devops_engineer">DevOps Engineer</option>
-                            <option value="data_scientist">Data Scientist</option>
-                        </optgroup>
-                        <optgroup label="Design">
-                            <option value="ui_ux_designer">UI/UX Designer</option>
-                            <option value="graphic_designer">Graphic Designer</option>
-                            <option value="web_designer">Web Designer</option>
-                        </optgroup>
-                        <optgroup label="Content & Marketing">
-                            <option value="content_writer">Content Writer</option>
-                            <option value="copywriter">Copywriter</option>
-                            <option value="video_editor">Video Editor</option>
-                            <option value="social_media_manager">Social Media Manager</option>
-                            <option value="content_creator">Content Creator</option>
-                            <option value="youtube_creator">YouTube Creator</option>
-                            <option value="podcast_producer">Podcast Producer</option>
-                            <option value="influencer_manager">Influencer Manager</option>
-                            <option value="email_marketer">Email Marketer</option>
-                            <option value="seo_specialist">SEO Specialist</option>
-                            <option value="community_manager">Community Manager</option>
-                        </optgroup>
-                        <optgroup label="Business">
-                            <option value="virtual_assistant">Virtual Assistant</option>
-                            <option value="project_manager">Project Manager</option>
-                            <option value="product_manager">Product Manager</option>
-                        </optgroup>
-                    </select>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Experience Level</label>
-                        <select id="experience" required>
-                            <option value="junior">Junior (0-2 years)</option>
-                            <option value="mid" selected>Mid (3-5 years)</option>
-                            <option value="senior">Senior (6-9 years)</option>
-                            <option value="expert">Expert (10+ years)</option>
-                        </select>
+            <div class="hero-visual">
+                <div class="floating-badge warning">⚠️ You're undercharging!</div>
+                <div class="calculator-card">
+                    <div class="calc-card-header">
+                        <h3>💰 AI Freelance Rate Calculator</h3>
+                        <p>Discover your true market value</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>Your Location</label>
-                        <select id="location" required>
-                            <option value="">Select country...</option>
-                            <optgroup label="Turkey & Middle East">
-                                <option value="turkey">🇹🇷 Turkey</option>
-                                <option value="israel">🇮🇱 Israel</option>
-                                <option value="uae">🇦🇪 UAE</option>
-                            </optgroup>
-                            <optgroup label="North America">
-                                <option value="us">🇺🇸 United States</option>
-                                <option value="canada">🇨🇦 Canada</option>
-                            </optgroup>
-                            <optgroup label="Western Europe">
-                                <option value="uk">🇬🇧 United Kingdom</option>
-                                <option value="germany">🇩🇪 Germany</option>
-                                <option value="france">🇫🇷 France</option>
-                                <option value="switzerland">🇨🇭 Switzerland</option>
-                            </optgroup>
-                            <optgroup label="Eastern Europe">
-                                <option value="poland">🇵🇱 Poland</option>
-                                <option value="ukraine">🇺🇦 Ukraine</option>
-                                <option value="romania">🇷🇴 Romania</option>
-                            </optgroup>
-                            <optgroup label="Asia">
-                                <option value="india">🇮🇳 India</option>
-                                <option value="philippines">🇵🇭 Philippines</option>
-                                <option value="vietnam">🇻🇳 Vietnam</option>
-                                <option value="singapore">🇸🇬 Singapore</option>
-                                <option value="japan">🇯🇵 Japan</option>
-                            </optgroup>
-                            <optgroup label="Latin America">
-                                <option value="brazil">🇧🇷 Brazil</option>
-                                <option value="mexico">🇲🇽 Mexico</option>
-                                <option value="argentina">🇦🇷 Argentina</option>
-                                <option value="colombia">🇨🇴 Colombia</option>
-                            </optgroup>
-                            <optgroup label="Africa">
-                                <option value="south_africa">🇿🇦 South Africa</option>
-                                <option value="nigeria">🇳🇬 Nigeria</option>
-                                <option value="kenya">🇰🇪 Kenya</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Target Clients</label>
-                        <select id="client_market">
-                            <option value="us">🇺🇸 US Clients</option>
-                            <option value="uk">🇬🇧 UK Clients</option>
-                            <option value="eu">🇪🇺 EU Clients</option>
-                            <option value="global" selected>🌍 Global</option>
-                            <option value="local">📍 Local Only</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Current Rate (optional)</label>
-                        <div class="input-with-prefix">
-                            <span>$</span>
-                            <input type="number" id="current_rate" placeholder="40" min="1" max="1000">
+                    <div class="calc-card-body">
+                        <div class="calc-field">
+                            <label class="calc-field-label">What do you do?</label>
+                            <select class="calc-field-select" id="heroRole">
+                                <option value="frontend">Frontend Developer</option>
+                                <option value="backend">Backend Developer</option>
+                                <option value="fullstack">Full-Stack Developer</option>
+                                <option value="mobile">Mobile Developer</option>
+                                <option value="design">UI/UX Designer</option>
+                                <option value="data">Data Scientist / Analyst</option>
+                                <option value="devops">DevOps Engineer</option>
+                                <option value="content">Content Writer</option>
+                                <option value="marketing">Digital Marketer</option>
+                                <option value="video">Video Editor</option>
+                            </select>
+                        </div>
+                        <div class="calc-two-col">
+                            <div class="calc-field">
+                                <label class="calc-field-label">Experience</label>
+                                <select class="calc-field-select" id="heroExp">
+                                    <option value="junior">Junior (0-2 yrs)</option>
+                                    <option value="mid" selected>Mid (3-5 yrs)</option>
+                                    <option value="senior">Senior (5+ yrs)</option>
+                                </select>
+                            </div>
+                            <div class="calc-field">
+                                <label class="calc-field-label">Location</label>
+                                <select class="calc-field-select" id="heroLocation">
+                                    <option value="PK">🇵🇰 Pakistan</option>
+                                    <option value="NG">🇳🇬 Nigeria</option>
+                                    <option value="EG">🇪🇬 Egypt</option>
+                                    <option value="TR" selected>🇹🇷 Turkey</option>
+                                    <option value="IN">🇮🇳 India</option>
+                                    <option value="PH">🇵🇭 Philippines</option>
+                                    <option value="MX">🇲🇽 Mexico</option>
+                                    <option value="BR">🇧🇷 Brazil</option>
+                                    <option value="US">🇺🇸 United States</option>
+                                    <option value="GB">🇬🇧 United Kingdom</option>
+                                    <option value="EU">🇪🇺 Europe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="calc-result-label">Recommended Rate</div>
+                            <div class="calc-result-rate" id="heroRate">$65<span>/hr</span></div>
+                            <div class="calc-result-hint" id="heroHint">🚨 You're undercharging by 45%!</div>
                         </div>
                     </div>
                 </div>
-
-                <button type="submit">Calculate My Rate 🚀</button>
-            </form>
-
-            <div class="results" id="results">
-                <div class="rate-display">
-                    <div class="rate-label">Your Recommended Rate</div>
-                    <div class="rate-value">$<span id="result-rate">80</span><span>/hr</span></div>
-                    <div class="rate-range" id="result-range">Range: $50 - $160/hr</div>
-                </div>
-
-                <div class="insight-box opportunity" id="opportunity-box">
-                    <div class="insight-title">💡 International Opportunity</div>
-                    <div class="insight-text" id="opportunity-text"></div>
-                </div>
-
-                <div class="insight-box" id="comparison-box">
-                    <div class="insight-title">📊 Your Current Rate</div>
-                    <div class="insight-text large" id="comparison-text"></div>
-                </div>
-
-                <div class="insight-box" id="tip-box" style="background: #f0f9ff;">
-                    <div class="insight-title">💎 Pro Tip</div>
-                    <div class="insight-text" id="tip-text"></div>
-                </div>
-
-                <div class="share-section">
-                    <div class="insight-title">📱 Share Your Results</div>
-                    <div class="share-box" id="share-text"></div>
-                    <div class="share-buttons">
-                        <button type="button" class="share-btn copy" onclick="copyToClipboard()">📋 Copy</button>
-                        <button type="button" class="share-btn twitter" onclick="shareTwitter()">𝕏 Tweet</button>
-                    </div>
-                </div>
-
-                <div class="powered-by">
-                    Powered by <a href="https://cenoa.com" target="_blank">Cenoa</a> · Get paid from anywhere 🌍
-                </div>
+                <div class="floating-badge users">👥 <strong>47,000+</strong> checked</div>
             </div>
+        </div>
+    </section>
+
+    <!-- ── Stats Bar ── -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value">47,000+</div>
+            <div class="stat-label">Rates Calculated</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">120+</div>
+            <div class="stat-label">Countries</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">73%</div>
+            <div class="stat-label">Were Undercharging</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">+$42/hr</div>
+            <div class="stat-label">Avg. Rate Increase</div>
         </div>
     </div>
 
-    <div class="copied-toast" id="toast">Copied to clipboard! ✓</div>
+    <!-- ── Problem Section ── -->
+    <section class="problem-section">
+        <div class="section-content">
+            <div class="section-label">The Problem</div>
+            <h2 class="section-title">Most freelancers guess their rates</h2>
+            <p class="section-subtitle">Without market data, you're either leaving money on the table or pricing yourself out. Sound familiar?</p>
+            <div class="problem-cards">
+                <div class="problem-card">
+                    <div class="problem-card-icon">🤷</div>
+                    <h3 class="problem-card-title">"Am I too cheap?"</h3>
+                    <p class="problem-card-text">Imposter syndrome has you charging less than junior developers in other countries.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-card-icon">💸</div>
+                    <h3 class="problem-card-title">"Am I too expensive?"</h3>
+                    <p class="problem-card-text">You lose bids and wonder if your rates are scaring away potential clients.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-card-icon">🌍</div>
+                    <h3 class="problem-card-title">"What's the market rate?"</h3>
+                    <p class="problem-card-text">Real rate data is scattered across forums, job boards, and outdated surveys.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How It Works ── -->
+    <section class="how-section">
+        <div class="section-content">
+            <div class="section-label">How It Works</div>
+            <h2 class="section-title">Get your rate in 30 seconds</h2>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-step-number">1</div>
+                    <h3 class="how-step-title">Enter your info</h3>
+                    <p class="how-step-text">Your skill, experience level, and location. Takes 10 seconds.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">2</div>
+                    <h3 class="how-step-title">AI analyzes market</h3>
+                    <p class="how-step-text">We compare against thousands of real freelancer rates worldwide.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">3</div>
+                    <h3 class="how-step-title">Get your rate</h3>
+                    <p class="how-step-text">See your recommended rate, market range, and personalized tips.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Full Calculator ── -->
+    <section class="calculator-section" id="calculator">
+        <div class="section-content">
+            <div class="section-label">The Calculator</div>
+            <h2 class="section-title">Find your rate now</h2>
+            <p class="section-subtitle">Enter your income goals for a detailed breakdown with market benchmarks.</p>
+        </div>
+        <div class="calc-layout">
+            <div class="calc-form-card">
+                <h2>📊 Your Details</h2>
+                <form id="calculatorForm">
+                    <div class="form-group">
+                        <label for="country">Country / Currency</label>
+                        <select id="country" required>
+                            <option value="">Select your country</option>
+                            <option value="PK">🇵🇰 Pakistan (PKR)</option>
+                            <option value="NG">🇳🇬 Nigeria (NGN)</option>
+                            <option value="EG">🇪🇬 Egypt (EGP)</option>
+                            <option value="TR">🇹🇷 Turkey (TRY)</option>
+                            <option value="US">🇺🇸 United States (USD)</option>
+                            <option value="GB">🇬🇧 United Kingdom (GBP)</option>
+                            <option value="EU">🇪🇺 European Union (EUR)</option>
+                            <option value="IN">🇮🇳 India (INR)</option>
+                            <option value="BD">🇧🇩 Bangladesh (BDT)</option>
+                            <option value="PH">🇵🇭 Philippines (PHP)</option>
+                            <option value="OTHER">🌍 Other (USD)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="desiredIncome">Desired Annual Income (After Expenses)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="desiredIncome" min="0" step="1000" placeholder="e.g. 50000" required>
+                            <span class="input-unit" id="incomeUnit">USD</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="monthlyExpenses">Monthly Business Expenses</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="monthlyExpenses" min="0" step="100" placeholder="e.g. 500" required>
+                            <span class="input-unit" id="expensesUnit">USD</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="billableHours">Billable Hours per Week</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="billableHours" min="1" max="60" value="30" required>
+                            <span class="input-unit">hrs</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="vacationDays">Vacation Days per Year</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="vacationDays" min="0" max="365" value="20" required>
+                            <span class="input-unit">days</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taxRate">Tax Rate (%)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="taxRate" min="0" max="100" step="0.5" placeholder="e.g. 20" required>
+                            <span class="input-unit">%</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="calc-submit">Calculate My Rates 🚀</button>
+                </form>
+            </div>
+
+            <div class="tips-card">
+                <h2>💡 How To Get Accurate Results</h2>
+                <div class="tip-item">
+                    <div class="tip-icon">💰</div>
+                    <div>
+                        <div class="tip-title">Desired Income</div>
+                        <div class="tip-text">What you want to take home after all expenses and taxes. Be honest — don't undersell yourself.</div>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🏢</div>
+                    <div>
+                        <div class="tip-title">Business Expenses</div>
+                        <div class="tip-text">Include software subscriptions, internet, equipment, insurance, courses, and any other work costs.</div>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">⏰</div>
+                    <div>
+                        <div class="tip-title">Billable Hours</div>
+                        <div class="tip-text">Not all work hours are billable. Account for admin, proposals, and meetings. 25–35 hrs/week is realistic.</div>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🌴</div>
+                    <div>
+                        <div class="tip-title">Vacation Days</div>
+                        <div class="tip-text">Don't forget to take breaks! 15–25 days is healthy. Your rate must cover your time off.</div>
+                    </div>
+                </div>
+                <div class="cenoa-promo">
+                    <div class="cenoa-promo-label">Cenoa Tip</div>
+                    <p>Get paid from international clients instantly — with <strong>zero transfer fees</strong> — using your Cenoa US bank account.</p>
+                    <a href="https://cenoa.com" target="_blank">Open Free Account →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Results ── -->
+    <section class="results-section">
+        <div class="results-wrapper">
+            <div id="results" class="hidden">
+                <div class="results-header">
+                    <h2>🎉 Your Personalized Rate Breakdown</h2>
+                    <p>Based on your income goals, expenses, and market data</p>
+                </div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Minimum Hourly</div>
+                        <div class="result-value" id="minHourly">$0</div>
+                        <div class="result-subtext">Break-even point</div>
+                    </div>
+                    <div class="result-card recommended">
+                        <span class="result-badge">Best rate</span>
+                        <div class="result-label">⭐ Recommended Hourly</div>
+                        <div class="result-value" id="recHourly">$0</div>
+                        <div class="result-subtext">Includes 20% buffer</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Daily Rate</div>
+                        <div class="result-value" id="dailyRate">$0</div>
+                        <div class="result-subtext">8-hour day</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Weekly Rate</div>
+                        <div class="result-value" id="weeklyRate">$0</div>
+                        <div class="result-subtext">5-day week</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Monthly Rate</div>
+                        <div class="result-value" id="monthlyRate">$0</div>
+                        <div class="result-subtext">Full-time contract</div>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <h3>📈 Annual Income Breakdown</h3>
+                    <div class="breakdown-item"><span>Desired Take-Home Income</span><span id="breakdownIncome">$0</span></div>
+                    <div class="breakdown-item"><span>Business Expenses (Annual)</span><span id="breakdownExpenses">$0</span></div>
+                    <div class="breakdown-item"><span>Taxes (Estimated)</span><span id="breakdownTaxes">$0</span></div>
+                    <div class="breakdown-item"><span>Total Revenue Needed</span><span id="breakdownTotal">$0</span></div>
+                </div>
+
+                <div class="market-card">
+                    <h3>🌍 Market Rate Comparison</h3>
+                    <p style="font-size:14px;color:#64748b;margin-bottom:20px;">Average hourly rates for freelancers on global platforms:</p>
+                    <div class="comparison-bar">
+                        <div class="comparison-label"><span>Entry Level</span><span id="entryRate">$15–25</span></div>
+                        <div class="bar-container"><div class="bar-fill" style="width:30%;"></div></div>
+                    </div>
+                    <div class="comparison-bar">
+                        <div class="comparison-label"><span>Intermediate</span><span id="midRate">$30–60</span></div>
+                        <div class="bar-container"><div class="bar-fill" style="width:55%;"></div></div>
+                    </div>
+                    <div class="comparison-bar">
+                        <div class="comparison-label"><span>Expert</span><span id="expertRate">$75–150+</span></div>
+                        <div class="bar-container"><div class="bar-fill" style="width:80%;"></div></div>
+                    </div>
+                    <div class="comparison-bar">
+                        <div class="comparison-label"><span><strong>Your Recommended Rate</strong></span><span id="yourRate">$0</span></div>
+                        <div class="bar-container"><div class="bar-fill your-rate" id="yourRateBar" style="width:0%;"></div></div>
+                    </div>
+                </div>
+
+                <div class="pro-tips-card">
+                    <h3>💡 Pro Tips for Rate Negotiation</h3>
+                    <ul id="tipsList"></ul>
+                </div>
+
+                <div class="action-buttons">
+                    <button onclick="shareResults()" class="btn-secondary">📤 Share Results</button>
+                    <button onclick="saveResults()" class="btn-primary">💾 Save as PDF</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Features Section ── -->
+    <section class="features-section">
+        <div class="section-content">
+            <div class="section-label">Why Cenoa</div>
+            <h2 class="section-title">More than just a number</h2>
+            <p class="section-subtitle">Our AI doesn't just spit out a rate. You get context, comparisons, and specific advice for your situation.</p>
+        </div>
+        <div class="features-grid">
+            <div class="features-image">📊</div>
+            <div class="features-text">
+                <h3>More than just a number</h3>
+                <p>Our AI doesn't just spit out a rate. You get context, comparisons, and specific advice for your situation.</p>
+                <ul class="features-list">
+                    <li>Recommended rate based on real market data</li>
+                    <li>Range showing min/max for your profile</li>
+                    <li>"You're undercharging by X%" comparison</li>
+                    <li>International opportunity analysis</li>
+                    <li>Profession-specific negotiation tips</li>
+                    <li>Shareable results for social media</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Testimonials ── -->
+    <section class="testimonials-section">
+        <div class="section-content">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">Freelancers love it</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"I was charging $35/hr for years. This tool showed me I could be at $65. <span class="highlight">Raised my rates and haven't lost a client.</span>"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">AK</div>
+                    <div>
+                        <div class="testimonial-name">Ayşe K.</div>
+                        <div class="testimonial-role">Frontend Developer, Istanbul</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The international opportunity insight was eye-opening. <span class="highlight">Targeting US clients doubled my income.</span>"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">CM</div>
+                    <div>
+                        <div class="testimonial-name">Carlos M.</div>
+                        <div class="testimonial-role">UI/UX Designer, Mexico City</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <div class="cta-text">
+                <h3>Stop guessing. Start knowing.</h3>
+                <p>Join 47,000+ freelancers who discovered their true market value.</p>
+            </div>
+            <a href="#calculator" class="cta-button">Calculate My Rate Now →</a>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="footer-logo">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16V24H16C11.5817 24 8 20.4183 8 16Z" fill="white"/>
+                <path d="M4 12C4 7.58172 7.58172 4 12 4H16V12C16 16.4183 12.4183 20 8 20H4V12Z" fill="#7dd3fc"/>
+            </svg>
+            <span>cenoa</span>
+        </div>
+        <p>The best way to get paid from anywhere. <a href="https://cenoa.com" target="_blank">Open your free US bank account →</a></p>
+    </footer>
 
     <script>
-        // Rate data
-        const BASE_RATES = {
-            software_developer: [50, 80, 160],
-            frontend_developer: [40, 65, 120],
-            backend_developer: [50, 85, 140],
-            fullstack_developer: [55, 95, 160],
-            mobile_developer: [45, 75, 140],
-            ai_ml_engineer: [80, 130, 250],
-            devops_engineer: [55, 85, 150],
-            data_scientist: [60, 100, 180],
-            ui_ux_designer: [35, 55, 90],
-            graphic_designer: [25, 40, 60],
-            web_designer: [30, 50, 80],
-            content_writer: [20, 40, 80],
-            copywriter: [30, 55, 100],
-            video_editor: [25, 45, 80],
-            social_media_manager: [20, 40, 70],
-            content_creator: [30, 60, 120],
-            youtube_creator: [35, 70, 150],
-            podcast_producer: [30, 55, 100],
-            influencer_manager: [35, 65, 110],
-            email_marketer: [25, 50, 90],
-            seo_specialist: [30, 60, 110],
-            community_manager: [25, 45, 75],
-            virtual_assistant: [15, 25, 45],
-            project_manager: [45, 75, 130],
-            product_manager: [60, 100, 180],
+        // ── Hero Calculator (instant live update) ──
+        const heroRates = {
+            frontend:  { junior: 25, mid: 55, senior: 90 },
+            backend:   { junior: 28, mid: 60, senior: 100 },
+            fullstack: { junior: 30, mid: 65, senior: 110 },
+            mobile:    { junior: 30, mid: 65, senior: 105 },
+            design:    { junior: 22, mid: 50, senior: 85 },
+            data:      { junior: 32, mid: 70, senior: 120 },
+            devops:    { junior: 35, mid: 75, senior: 130 },
+            content:   { junior: 15, mid: 30, senior: 55 },
+            marketing: { junior: 18, mid: 35, senior: 65 },
+            video:     { junior: 20, mid: 40, senior: 70 }
         };
 
-        const EXPERIENCE_MULT = {
-            junior: 0.6,
-            mid: 1.0,
-            senior: 1.5,
-            expert: 2.0
+        const locationMultipliers = {
+            PK: 0.28, NG: 0.32, EG: 0.38, TR: 0.5,
+            IN: 0.3, PH: 0.4, MX: 0.55, BR: 0.52,
+            US: 1.0, GB: 1.1, EU: 0.95
         };
 
-        const LOCATION_ADJ = {
-            us: 1.0, canada: 0.9,
-            uk: 0.85, germany: 0.8, france: 0.75, switzerland: 1.1,
-            poland: 0.45, ukraine: 0.35, romania: 0.4,
-            turkey: 0.4, israel: 0.75, uae: 0.7,
-            india: 0.35, philippines: 0.3, vietnam: 0.3, singapore: 0.7, japan: 0.75,
-            brazil: 0.4, mexico: 0.4, argentina: 0.35, colombia: 0.35,
-            south_africa: 0.35, nigeria: 0.3, kenya: 0.3
-        };
+        // Average market rate for comparison (mid-level developer in USD)
+        const marketAvg = { frontend: 55, backend: 60, fullstack: 65, mobile: 65, design: 50, data: 70, devops: 75, content: 30, marketing: 35, video: 40 };
 
-        const CLIENT_PREMIUM = {
-            us: 1.0, uk: 0.9, eu: 0.85, global: 0.7, local: 0.5
-        };
+        function updateHeroCalculator() {
+            const role = document.getElementById('heroRole').value;
+            const exp = document.getElementById('heroExp').value;
+            const loc = document.getElementById('heroLocation').value;
 
-        const SKILL_NAMES = {
-            software_developer: "Software Developer",
-            frontend_developer: "Frontend Developer",
-            backend_developer: "Backend Developer",
-            fullstack_developer: "Fullstack Developer",
-            mobile_developer: "Mobile Developer",
-            ai_ml_engineer: "AI/ML Engineer",
-            devops_engineer: "DevOps Engineer",
-            data_scientist: "Data Scientist",
-            ui_ux_designer: "UI/UX Designer",
-            graphic_designer: "Graphic Designer",
-            web_designer: "Web Designer",
-            content_writer: "Content Writer",
-            copywriter: "Copywriter",
-            video_editor: "Video Editor",
-            social_media_manager: "Social Media Manager",
-            content_creator: "Content Creator",
-            youtube_creator: "YouTube Creator",
-            podcast_producer: "Podcast Producer",
-            influencer_manager: "Influencer Manager",
-            email_marketer: "Email Marketer",
-            seo_specialist: "SEO Specialist",
-            community_manager: "Community Manager",
-            virtual_assistant: "Virtual Assistant",
-            project_manager: "Project Manager",
-            product_manager: "Product Manager"
-        };
+            const baseRate = heroRates[role][exp];
+            const multiplier = locationMultipliers[loc] || 0.5;
+            const rate = Math.round(baseRate * multiplier);
+            const marketRate = Math.round(marketAvg[role] * multiplier);
+            const diff = Math.round(((marketRate - rate) / rate) * 100);
 
-        let lastResult = null;
+            document.getElementById('heroRate').innerHTML = `$${rate}<span>/hr</span>`;
 
-        document.getElementById('calculator-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculate();
-        });
-
-        function calculate() {
-            const skill = document.getElementById('skill').value;
-            const experience = document.getElementById('experience').value;
-            const location = document.getElementById('location').value;
-            const clientMarket = document.getElementById('client_market').value;
-            const currentRate = parseFloat(document.getElementById('current_rate').value) || null;
-
-            if (!skill || !location) {
-                alert('Please select your skill and location');
-                return;
-            }
-
-            const [baseMin, baseMid, baseMax] = BASE_RATES[skill];
-            const expMult = EXPERIENCE_MULT[experience];
-            const locAdj = LOCATION_ADJ[location];
-            const clientPrem = CLIENT_PREMIUM[clientMarket];
-
-            const marketFactor = Math.max(locAdj, clientPrem);
-
-            const rateMin = Math.round(baseMin * expMult * marketFactor);
-            const rateMid = Math.round(baseMid * expMult * marketFactor);
-            const rateMax = Math.round(baseMax * expMult * marketFactor);
-
-            const localRate = Math.round(baseMid * expMult * locAdj);
-
-            // Update UI
-            document.getElementById('result-rate').textContent = rateMid;
-            document.getElementById('result-range').textContent = `Range: $${rateMin} - $${rateMax}/hr`;
-
-            // International opportunity
-            const oppBox = document.getElementById('opportunity-box');
-            const oppText = document.getElementById('opportunity-text');
-            if (locAdj < clientPrem && clientMarket !== 'local') {
-                const uplift = Math.round((clientPrem / locAdj - 1) * 100);
-                oppText.textContent = `Targeting ${clientMarket.toUpperCase()} clients could earn you ${uplift}% more than local rates!`;
-                oppBox.style.display = 'block';
+            const hintEl = document.getElementById('heroHint');
+            if (diff > 10) {
+                hintEl.textContent = `🚨 You're undercharging by ${diff}%!`;
+                hintEl.style.background = '#c8ff00';
+                hintEl.style.color = '#1a1a2e';
+            } else if (diff < -10) {
+                hintEl.textContent = `✅ Above market rate — great positioning!`;
+                hintEl.style.background = '#10b981';
+                hintEl.style.color = 'white';
             } else {
-                oppBox.style.display = 'none';
+                hintEl.textContent = `✓ You're right at market rate`;
+                hintEl.style.background = '#3b82f6';
+                hintEl.style.color = 'white';
             }
-
-            // Comparison with varied copy
-            const compBox = document.getElementById('comparison-box');
-            const compText = document.getElementById('comparison-text');
-            if (currentRate) {
-                compBox.style.display = 'block';
-                if (currentRate < rateMid * 0.8) {
-                    const diff = Math.round((rateMid / currentRate - 1) * 100);
-                    const underchargeCopy = [
-                        `<span class="emoji">🚨</span> You're undercharging by ~${diff}%! Time to raise those rates.`,
-                        `<span class="emoji">💸</span> You could be earning ${diff}% more. That's money left on the table!`,
-                        `<span class="emoji">⚠️</span> Your rate is ${diff}% below market. Your skills are worth more!`,
-                        `<span class="emoji">📈</span> Charging ${diff}% less than market value? Let's fix that.`
-                    ];
-                    compText.innerHTML = underchargeCopy[Math.floor(Math.random() * underchargeCopy.length)];
-                    compBox.className = 'insight-box warning';
-                } else if (currentRate > rateMid * 1.2) {
-                    const diff = Math.round((currentRate / rateMid - 1) * 100);
-                    const highRateCopy = [
-                        `<span class="emoji">💪</span> You're charging ${diff}% above market - crushing it!`,
-                        `<span class="emoji">🔥</span> Premium pricing! You're ${diff}% above average. Well done!`,
-                        `<span class="emoji">⭐</span> ${diff}% above market? You know your worth!`,
-                        `<span class="emoji">🎯</span> Top ${diff}% earner territory. Keep it up!`
-                    ];
-                    compText.innerHTML = highRateCopy[Math.floor(Math.random() * highRateCopy.length)];
-                    compBox.className = 'insight-box success';
-                } else {
-                    const goodRateCopy = [
-                        `<span class="emoji">✓</span> You're pricing competitively! Right in the sweet spot.`,
-                        `<span class="emoji">👍</span> Solid rate! You're aligned with market expectations.`,
-                        `<span class="emoji">🎯</span> Perfect pricing! You're right on target.`,
-                        `<span class="emoji">💯</span> Great rate! You're pricing yourself fairly.`
-                    ];
-                    compText.innerHTML = goodRateCopy[Math.floor(Math.random() * goodRateCopy.length)];
-                    compBox.className = 'insight-box success';
-                }
-            } else {
-                compBox.style.display = 'none';
-            }
-
-            // Profession-specific tips
-            const tipBox = document.getElementById('tip-box');
-            const tipText = document.getElementById('tip-text');
-            const professionTips = {
-                content_creator: [
-                    "Build a portfolio showcasing your best work. Brands pay premium for proven results.",
-                    "Consider offering packages (content + strategy) to increase your project value.",
-                    "Your engagement rates matter more than follower count. Track and showcase your metrics."
-                ],
-                youtube_creator: [
-                    "Brand deals pay 2-5x more than AdSense. Focus on building a media kit.",
-                    "Package rates: Single video vs. multi-video campaigns can 3x your earnings.",
-                    "Negotiate usage rights separately - unlimited use should cost more."
-                ],
-                podcast_producer: [
-                    "Offer tiered packages: audio-only vs. video podcast production commands different rates.",
-                    "Monthly retainer clients provide stable income - aim for 2-3 anchor clients.",
-                    "Post-production + show notes + social clips = bundle pricing opportunity."
-                ],
-                influencer_manager: [
-                    "Percentage-based fees (15-20% of deals) can outperform hourly rates for top talent.",
-                    "Build case studies showing ROI - managers who prove value charge 2x more.",
-                    "Offer growth strategy + management bundles for premium pricing."
-                ],
-                social_media_manager: [
-                    "Monthly retainers beat hourly billing - aim for 3-6 month contracts.",
-                    "Content creation + management commands higher rates than management alone.",
-                    "Track engagement metrics religiously - results justify rate increases."
-                ],
-                video_editor: [
-                    "Specialization pays: wedding videos vs. corporate vs. YouTube all have different rate ceilings.",
-                    "Fast turnaround = premium pricing. Offer rush delivery tiers.",
-                    "Raw footage organization included? That's an add-on service."
-                ],
-                copywriter: [
-                    "Direct response copy (sales pages, emails) pays 2-3x more than blog posts.",
-                    "Royalty deals for high-converting copy can earn you 5-10x the base rate.",
-                    "Specialize in one niche (SaaS, eCommerce, finance) to command premium rates."
-                ],
-                email_marketer: [
-                    "Performance bonuses tied to open/click rates can double your earnings.",
-                    "Strategy + execution commands 50% more than execution-only work.",
-                    "Email sequence packages (welcome, nurture, sales) = predictable retainer income."
-                ],
-                seo_specialist: [
-                    "Results-based pricing (rank improvements) can 3x your income vs. hourly.",
-                    "Local SEO for small businesses vs. enterprise SEO = different pricing strategies.",
-                    "Technical SEO audits can be charged as one-time premium projects."
-                ],
-                community_manager: [
-                    "Engagement metrics = leverage. Track and report member growth + activity.",
-                    "Crisis management and moderation are separate premium services.",
-                    "Build + manage beats manage-only for pricing power."
-                ],
-                software_developer: [
-                    "Specializing in hot tech (AI, blockchain, React) can double your rates.",
-                    "Fixed-price projects with clear scope beat hourly for experienced devs.",
-                    "Maintenance retainers provide stable income on top of project work."
-                ],
-                ai_ml_engineer: [
-                    "AI is premium right now - but prove your expertise with a strong portfolio.",
-                    "Consulting + implementation commands 50% more than implementation alone.",
-                    "LLM integration work is hot - specialize while demand is high."
-                ],
-                ui_ux_designer: [
-                    "User research + design commands 40% more than design-only work.",
-                    "Case studies showing business impact justify premium rates.",
-                    "Figma/design system creation = separate high-value service."
-                ],
-                graphic_designer: [
-                    "Brand identity packages (logo + guidelines + collateral) = higher value than one-off logos.",
-                    "Unlimited revisions kills profit. Set clear revision limits in contracts.",
-                    "Print design generally pays less than digital - diversify your skills."
-                ],
-                project_manager: [
-                    "PMP certification can add 20-30% to your rates immediately.",
-                    "Industry expertise (construction, software, marketing) commands premiums.",
-                    "Full project ownership beats coordination-only for pricing."
-                ],
-                product_manager: [
-                    "B2B SaaS PM work typically pays 30% more than consumer products.",
-                    "Strategy + roadmap + execution beats execution-only roles.",
-                    "Show metrics: successful launches, revenue impact, user growth."
-                ],
-                virtual_assistant: [
-                    "Specialize! Executive assistants charge 2-3x more than general VAs.",
-                    "Offer packages: admin + basic marketing/bookkeeping = higher value.",
-                    "Long-term retainer clients (6+ months) provide stability."
-                ]
-            };
-
-            if (professionTips[skill]) {
-                const tips = professionTips[skill];
-                tipText.textContent = tips[Math.floor(Math.random() * tips.length)];
-                tipBox.style.display = 'block';
-            } else {
-                tipBox.style.display = 'none';
-            }
-
-            // Shareable text
-            const skillName = SKILL_NAMES[skill];
-            const expName = experience.charAt(0).toUpperCase() + experience.slice(1);
-            let shareText = `I just discovered my market rate as a ${expName} ${skillName}:\n\n`;
-            shareText += `💰 Recommended: $${rateMid}/hr\n`;
-            shareText += `📊 Range: $${rateMin} - $${rateMax}/hr\n`;
-            if (currentRate && currentRate < rateMid * 0.8) {
-                const diff = Math.round((rateMid / currentRate - 1) * 100);
-                shareText += `\n🚨 I was undercharging by ${diff}%!\n`;
-            }
-            shareText += `\nCalculate yours → cenoa.com/rate-calculator`;
-
-            document.getElementById('share-text').textContent = shareText;
-            lastResult = { shareText, rateMid, rateMin, rateMax, skillName, expName };
-
-            // Show results
-            document.getElementById('results').classList.add('show');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function copyToClipboard() {
-            const text = document.getElementById('share-text').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
+        document.getElementById('heroRole').addEventListener('change', updateHeroCalculator);
+        document.getElementById('heroExp').addEventListener('change', updateHeroCalculator);
+        document.getElementById('heroLocation').addEventListener('change', updateHeroCalculator);
+        updateHeroCalculator();
+
+        // ── Full Calculator ──
+        const countryData = {
+            'PK': { currency: 'PKR', symbol: '₨', taxRate: 25, marketMultiplier: 0.3 },
+            'NG': { currency: 'NGN', symbol: '₦', taxRate: 24, marketMultiplier: 0.35 },
+            'EG': { currency: 'EGP', symbol: 'E£', taxRate: 22.5, marketMultiplier: 0.4 },
+            'TR': { currency: 'TRY', symbol: '₺', taxRate: 20, marketMultiplier: 0.5 },
+            'US': { currency: 'USD', symbol: '$', taxRate: 30, marketMultiplier: 1.0 },
+            'GB': { currency: 'GBP', symbol: '£', taxRate: 20, marketMultiplier: 1.1 },
+            'EU': { currency: 'EUR', symbol: '€', taxRate: 25, marketMultiplier: 1.0 },
+            'IN': { currency: 'INR', symbol: '₹', taxRate: 30, marketMultiplier: 0.25 },
+            'BD': { currency: 'BDT', symbol: '৳', taxRate: 25, marketMultiplier: 0.3 },
+            'PH': { currency: 'PHP', symbol: '₱', taxRate: 25, marketMultiplier: 0.35 },
+            'OTHER': { currency: 'USD', symbol: '$', taxRate: 25, marketMultiplier: 1.0 }
+        };
+
+        document.getElementById('country').addEventListener('change', function(e) {
+            const country = e.target.value;
+            if (country && countryData[country]) {
+                const data = countryData[country];
+                document.getElementById('incomeUnit').textContent = data.currency;
+                document.getElementById('expensesUnit').textContent = data.currency;
+                document.getElementById('taxRate').value = data.taxRate;
+            }
+        });
+
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateRates();
+        });
+
+        function calculateRates() {
+            const country = document.getElementById('country').value;
+            const desiredIncome = parseFloat(document.getElementById('desiredIncome').value);
+            const monthlyExpenses = parseFloat(document.getElementById('monthlyExpenses').value);
+            const billableHours = parseFloat(document.getElementById('billableHours').value);
+            const vacationDays = parseFloat(document.getElementById('vacationDays').value);
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+
+            const currencyData = countryData[country];
+            const symbol = currencyData.symbol;
+
+            const workingDaysPerYear = 365 - vacationDays - 104;
+            const workingWeeksPerYear = workingDaysPerYear / 5;
+            const billableHoursPerYear = billableHours * workingWeeksPerYear;
+            const annualExpenses = monthlyExpenses * 12;
+
+            const grossIncomeNeeded = desiredIncome / (1 - taxRate);
+            const totalRevenueNeeded = grossIncomeNeeded + annualExpenses;
+
+            const minHourlyRate = totalRevenueNeeded / billableHoursPerYear;
+            const recHourlyRate = minHourlyRate * 1.2;
+            const dailyRate = recHourlyRate * 8;
+            const weeklyRate = recHourlyRate * billableHours;
+            const monthlyRate = recHourlyRate * (billableHours * 4.33);
+
+            document.getElementById('minHourly').textContent = formatCurrency(minHourlyRate, symbol);
+            document.getElementById('recHourly').textContent = formatCurrency(recHourlyRate, symbol);
+            document.getElementById('dailyRate').textContent = formatCurrency(dailyRate, symbol);
+            document.getElementById('weeklyRate').textContent = formatCurrency(weeklyRate, symbol);
+            document.getElementById('monthlyRate').textContent = formatCurrency(monthlyRate, symbol);
+
+            const taxAmount = grossIncomeNeeded * taxRate;
+            document.getElementById('breakdownIncome').textContent = formatCurrency(desiredIncome, symbol);
+            document.getElementById('breakdownExpenses').textContent = formatCurrency(annualExpenses, symbol);
+            document.getElementById('breakdownTaxes').textContent = formatCurrency(taxAmount, symbol);
+            document.getElementById('breakdownTotal').textContent = formatCurrency(totalRevenueNeeded, symbol);
+
+            updateMarketComparison(recHourlyRate, symbol, currencyData.marketMultiplier);
+            updateTips(country, recHourlyRate);
+
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            window.calculationData = { country, symbol, minHourlyRate, recHourlyRate, dailyRate, weeklyRate, monthlyRate, desiredIncome, annualExpenses, taxAmount, totalRevenueNeeded };
+        }
+
+        function formatCurrency(amount, symbol) {
+            return symbol + Math.round(amount).toLocaleString();
+        }
+
+        function updateMarketComparison(yourRate, symbol, multiplier) {
+            const entryMin = Math.round(15 * multiplier);
+            const entryMax = Math.round(25 * multiplier);
+            const midMin = Math.round(30 * multiplier);
+            const midMax = Math.round(60 * multiplier);
+            const expertMin = Math.round(75 * multiplier);
+            const expertMax = Math.round(150 * multiplier);
+
+            document.getElementById('entryRate').textContent = `${symbol}${entryMin}–${entryMax}`;
+            document.getElementById('midRate').textContent = `${symbol}${midMin}–${midMax}`;
+            document.getElementById('expertRate').textContent = `${symbol}${expertMin}–${expertMax}+`;
+            document.getElementById('yourRate').textContent = formatCurrency(yourRate, symbol);
+
+            const barWidth = Math.min((yourRate / expertMax) * 100, 100);
+            document.getElementById('yourRateBar').style.width = barWidth + '%';
+        }
+
+        function updateTips(country, rate) {
+            const tips = [
+                "Start with your recommended rate — you can always negotiate down, but rarely up.",
+                "Consider value-based pricing for projects instead of hourly rates when possible.",
+                "Build a portfolio of results and testimonials — they justify premium rates.",
+                "Don't compete on price alone — differentiate on quality, speed, or specialization.",
+                "Review and increase your rates every 6–12 months as you gain experience.",
+                "Offer package deals for recurring clients to ensure stable income.",
+                "Be confident when stating your rate — hesitation signals lack of confidence.",
+                "Factor in unpaid work: proposals, meetings, revisions, and project management."
+            ];
+
+            if (['PK', 'NG', 'EG', 'TR', 'IN', 'PH', 'BD'].includes(country)) {
+                tips.unshift("Target international clients for higher rates while maintaining local purchasing power.");
+                tips.push("Use platforms like Upwork, Fiverr, or Toptal to access global markets.");
+            }
+
+            const tipsList = document.getElementById('tipsList');
+            tipsList.innerHTML = '';
+            tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                tipsList.appendChild(li);
             });
         }
 
-        function shareTwitter() {
-            const text = document.getElementById('share-text').textContent;
-            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank', 'width=550,height=420');
+        function shareResults() {
+            if (!window.calculationData) return;
+            const data = window.calculationData;
+            const text = `💼 My Freelance Rates (calculated with Cenoa):\n\n⭐ Recommended Hourly: ${data.symbol}${Math.round(data.recHourlyRate)}\n📅 Daily Rate: ${data.symbol}${Math.round(data.dailyRate)}\n📊 Monthly Rate: ${data.symbol}${Math.round(data.monthlyRate)}\n\nCalculate yours: ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'My Freelance Rates', text }).catch(() => copyToClipboard(text));
+            } else {
+                copyToClipboard(text);
+            }
         }
+
+        function copyToClipboard(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;opacity:0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            alert('Results copied to clipboard! 📋');
+        }
+
+        function saveResults() {
+            if (!window.calculationData) return;
+            window.print();
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
 </body>
 </html>
